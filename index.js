@@ -2,9 +2,9 @@ const apiurl  = "http://localhost:3000"
 async function register(e){
     e.preventDefault();
   axios.post(`${apiurl}/register`, {
-    "name" : e.target.name.value,
-    "email" : e.target.email.value,
-    "phone" :e.target.phone.value,
+    "username" : e.target.username.value,
+    // "email" : e.target.email.value,
+    // "phone" :e.target.phone.value,
     "password" : e.target.password.value
    }).then(res=>{
      alert("User Created");
@@ -29,9 +29,10 @@ function enableregister(e){
 
 function login(e){
   e.preventDefault();
-  axios.post(`${apiurl}/login`, {"email" :e.target.email.value, "password" : e.target.password.value}).then(res=>{
+  axios.post(`${apiurl}/login`, {"username" :e.target.username.value, "password" : e.target.password.value}).then(res=>{
     alert('Logged In Successfully');
     const token = res.data.token;
+    sessionStorage.setItem("token", token);
     localStorage.setItem("token", token);
     window.location.href = "chat.html";
   }).catch(err=>{
@@ -48,3 +49,4 @@ function login(e){
     }
   });
 }
+
