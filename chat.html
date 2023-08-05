@@ -16,13 +16,14 @@
     <title>Chat</title>
   </head>
   <body>
-    <div class="container">
+    <div class="p-3">
       <div class="row">
         <div id="top"><h1 class="display-3 col-3">Chat</h1></div>
+        <div> Logged in as <div class="text-primary" id="loggedinuser"> Guest</div> </div>
         <div
           id="group-heading"
-          class="display-5 col-6 mb-2 d-flex justify-content-end"
-        ></div>
+          class="display-5 col-6 mb-2 d-flex justify-content-center"
+        ><div class="text-danger display-8 "> Please Select Group From Sidebar</div></div>
       </div>
 
       <div class="row">
@@ -48,7 +49,7 @@
         ></div>
 
         <div class="col-3">
-          <div class="card" id="invitation-form">
+          <div class="card" hidden  id="invitation-form">
             <form onsubmit="inviteUser(event)">
               <input
                 type="text"
@@ -62,9 +63,11 @@
               </button>
             </form>
           </div>
-          
+          <button onclick="activateInvitationForm();" class="btn btn-primary mt-1 mb-1">Invite Users</button>
           <button onclick="seeGroupInvites();" class="btn btn-primary mt-1 mb-1">See Group Invites</button>
-          <div id="invite-list-div" hidden class="overflow-scroll p-2 bg-light" style="height: 500px">
+          <button onclick="seeGroupUsers();" class="btn btn-primary mt-1 mb-1">See Group Users</button>
+
+          <div id="invite-list-div"  class="overflow-scroll p-2 bg-light" style="height: 500px">
             <table class="table table-striped">
               <thead>
                   <th>Group</th>
@@ -76,13 +79,25 @@
               </tbody>
           </table>
           </div>
+          <div id="user-list-div"  class="overflow-scroll p-2 bg-light" style="height: 500px">
+            <table class="table table-striped">
+              <thead>
+                  <th>User</th>
+                  <th>Remove</th>
+                  <th>Make Admin</th>
+              </thead>
+              <tbody id="user-list">
+              </tbody>
+          </table>
+          </div>
+
         </div>
       </div>
 
       <div class="m-5"></div>
 
       <div class="row">
-        <form onsubmit="sendm(event)" class="position-fixed bottom-0 col-9">
+        <form onsubmit="sendm(event)" class="position-fixed container bottom-0">
           <div class="input-group">
             <input
               type="text"
@@ -110,7 +125,11 @@
       crossorigin="anonymous"
     ></script>
 
+
     <script src="chat.js"></script>
     <script src="invitation.js"></script>
+    <script src="admin.js"></script>
+
   </body>
 </html>
+

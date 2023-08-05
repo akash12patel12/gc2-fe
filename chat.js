@@ -6,6 +6,17 @@ const config = {
   },
 };
 
+async function getLoggedInUser(){
+  const loggedinuser = document.getElementById('loggedinuser');
+  axios.get(`${url}/getLoggedInUser`, config).then(res=>{
+    loggedinuser.innerHTML = res.data.User;
+  })
+
+
+}
+
+getLoggedInUser();
+
 function sendm(e) {
   e.preventDefault();
   // console.log("called");
@@ -32,30 +43,30 @@ function sendm(e) {
 //   showMessages(messages);
 // }
 
-async function checkForNewMessages() {
-  let currentMessages = await localStorage.getItem("messages");
-  let lastMsgId;
+// async function checkForNewMessages() {
+//   let currentMessages = await localStorage.getItem("messages");
+//   let lastMsgId;
 
-  if (!currentMessages) {
-    let messages = await axios.get(`${url}/getLatestTenMessages`, config);
-    await localStorage.setItem("messages", JSON.stringify(messages.data));
-    return true;
-  } else {
-    currentMessages = JSON.parse(currentMessages);
-    lastMsgId = currentMessages[currentMessages.length - 1].id;
-  }
+//   if (!currentMessages) {
+//     let messages = await axios.get(`${url}/getLatestTenMessages`, config);
+//     await localStorage.setItem("messages", JSON.stringify(messages.data));
+//     return true;
+//   } else {
+//     currentMessages = JSON.parse(currentMessages);
+//     lastMsgId = currentMessages[currentMessages.length - 1].id;
+//   }
 
-  let messages = await axios.get(
-    `${url}/getLatestMessages?lastMsgId=${lastMsgId}`,
-    config
-  );
-  currentMessages = currentMessages.concat(messages.data);
-  currentMessages = currentMessages.slice(
-    Math.max(currentMessages.length - 10, 0)
-  );
-  await localStorage.setItem("messages", JSON.stringify(currentMessages));
-  return true;
-}
+//   let messages = await axios.get(
+//     `${url}/getLatestMessages?lastMsgId=${lastMsgId}`,
+//     config
+//   );
+//   currentMessages = currentMessages.concat(messages.data);
+//   currentMessages = currentMessages.slice(
+//     Math.max(currentMessages.length - 10, 0)
+//   );
+//   await localStorage.setItem("messages", JSON.stringify(currentMessages));
+//   return true;
+// }
 
 async function showMessages(messages) {
   const chatarea = document.getElementById("chat-area");
@@ -68,18 +79,15 @@ async function showMessages(messages) {
 
 async function createGroup(e) {
   e.preventDefault();
-
   axios
     .post(`${url}/createGroup`, { groupName: e.target.groupName.value }, config)
     .then((res) => {
-
       alert(res.data.msg);
       getGroupsOfUser()
     })
     .catch((err) => {
       console.log(err);
     });
-  
 }
 
 async function getGroupsOfUser() {
@@ -110,19 +118,6 @@ async function getGroupsOfUser() {
     });
 }
 
-async function activateFirstGroup() {
-  //some code here
-  getGroupsOfUser().then((groups) => {
-    if (groups.length === 0) {
-      const chatarea = document.getElementById("chat-area");
-      chatarea.innerHTML =
-        '<h1 class="display-3"> Create Or Join A Group To Start Chatting </h1>';
-    } else {
-      const groupHeading = document.getElementById("group-heading");
-      groupHeading.innerHTML = `${groups[0].name}`;
-    }
-  });
-}
 
 function activateGroup(groupId) {
   // console.log(`group activated ${groupId}`);
@@ -131,7 +126,7 @@ function activateGroup(groupId) {
 }
 
 getGroupsOfUser();
-getActiveGroup();
+
 
 async function getActiveGroup(id) {
   if(!id) {
@@ -151,6 +146,7 @@ async function getActiveGroup(id) {
   } 
   getAllMessagesOfGroup();
 }
+
 getAllMessagesOfGroup();
 
 async function getAllMessagesOfGroup(){
@@ -159,9 +155,12 @@ async function getAllMessagesOfGroup(){
   .then( (res) => {
      const messages = res.data.messages ;
      showMessages(messages );
-  });
+  }); 
 }
 
 setInterval(() => getAllMessagesOfGroup() , 1000)
+
+
+
 
 

@@ -24,6 +24,8 @@ async function inviteUser(e) {
 }
 
 async function seeGroupInvites() {
+  const UserList = document.getElementById("user-list-div");
+  UserList.setAttribute('hidden' , true)
   axios
     .get(`${urlI}/seeGroupInvites`, config)
     .then((res) => {
